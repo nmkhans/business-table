@@ -1,11 +1,13 @@
 import React from 'react';
 import "./App.css";
+import { RouterProvider } from 'react-router-dom';
+import router from './routes/routes';
 
 function App() {
 
   return (
     <div className="App">
-      <h1>This is my business table project with react and vite</h1>
+      <RouterProvider router={router} />
     </div>
   )
 }
