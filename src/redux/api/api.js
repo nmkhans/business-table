@@ -5,11 +5,15 @@ export const api = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_BACKEND_BASE_URL
     }),
+    tagTypes: ["products"],
     endpoints: (builder) => ({
-        
+        getProducts: builder.query({
+            query: ({pageno, perpage, search}) => `/get-products?pageno=${pageno}&perpage=${perpage}&search=${search}`,
+            providesTags: ["products"]
+        })
     })
 })
 
 export const {
-    
+    useGetProductsQuery
 } = api;

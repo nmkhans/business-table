@@ -1,11 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
+import { useGetProductsQuery } from '../../redux/api/api';
 
 const TableContainer = () => {
+    const [query, setQuery] = useState({
+        pageno: 1,
+        perpage: 5,
+        search: ""
+    })
     const { register, handleSubmit } = useForm();
+    const {data, isLoading} = useGetProductsQuery({
+        pageno: query.pageno,
+        perpage: query.perpage,
+        search: query.search
+    })
+
+    if(isLoading) return "Loading..."
+    console.log(data)
 
     const onSubmit = (data) => {
-        console.log(data)
+        const newQuery = {
+            pageno: 1,
+            perpage: data.perpage,
+            search: data.search
+        }
+        setQuery(newQuery)
     }
 
     return (
@@ -30,7 +49,7 @@ const TableContainer = () => {
                             <div className="heading__top__search basis-3/4">
                                 <div className="flex">
                                     <input type="text" placeholder="Search here..." className="input input-bordered w-full mr-2"
-                                    {...register("search")}
+                                        {...register("search")}
                                     />
                                     <button type="submit" className="btn btn-primary hover:btn-secondary text-white">Search</button>
                                 </div>
