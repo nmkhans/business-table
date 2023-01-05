@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useGetProductsQuery } from '../../redux/api/api';
 import TableContent from '../TableContent/TableContent';
+import ReactPaginate from 'react-paginate';
 
 const TableContainer = () => {
     const [page, setPage] = useState(1);
+    const [buttonStart, setButtonStart] = useState(0);
+    const [buttonEnd, setButtonEnd] = useState(10);
     const [query, setQuery] = useState({
         pageno: page,
         perpage: 5,
@@ -18,26 +21,50 @@ const TableContainer = () => {
     })
 
     if (isLoading) return "Loading..."
-    console.log(data)
+    console.log(page)
 
     const calculateBtn = () => {
         const totalData = data.data[0].total[0].count;
         const perpage = query.perpage;
         const totalButtonAmount = Math.ceil(totalData / perpage);
+        const buttonNo = [];
+        for (let i = 0; i <= totalButtonAmount; i++) {
+            buttonNo.push(i + 1)
+        }
+        return buttonNo;
     }
-    console.log(calculateBtn())
 
     const onSubmit = (data) => {
         const newQuery = {
-            pageno: 1,
+            pageno: page,
             perpage: data.perpage,
             search: data.search
         }
         setQuery(newQuery)
     }
 
+    const handleNextButton = () => {
+        setButtonEnd(prev => prev + 1)
+        setButtonStart(prev => prev + 1)
+    }
+
+    const handlePrevButton = () => {
+        if (buttonStart !== 0) {
+            setButtonEnd(prev => prev - 1)
+            setButtonStart(prev => prev - 1)
+        }
+    }
+
+    const handlePagination = (element) => {
+        setPage(element);
+        setQuery({
+            ...query,
+            pageno: element
+        })
+    }
+
     return (
-        <div className="w-[90%] h-[80%] p-5 shadow-lg rounded-lg border border-slate-200">
+        <div className="w-[90%] h-[90%] p-5 shadow-lg rounded-lg border border-slate-200">
             <div className="table__heading">
                 <div className="heading__top flex justify-between">
                     <div className="heading__top__title basis-2/4">
@@ -67,11 +94,11 @@ const TableContainer = () => {
                     </div>
                 </div>
                 <div className="heading__bottom mt-5">
-                    <h3 className="text-md text-accent">Showing 10 of 2500 products</h3>
+                    <h3 className="text-md text-accent">Showing {data.data[0].rows.length} of {data.data[0].total[0].count} products</h3>
                 </div>
             </div>
             <div className="table__content mt-5">
-                <div className="overflow-y-scroll h-[270px] w-full">
+                <div className="overflow-y-scroll h-[320px] w-full">
                     <table className="table w-full">
                         <thead>
                             <tr>
@@ -89,11 +116,10 @@ const TableContainer = () => {
                     </table>
                 </div>
             </div>
-            <div className="table__pagination mt-3">
-                <div className="btn-group">
-                    <button className="btn">1</button>
-
-                </div>
+            <div className="table__pagination mt-5">
+                <button className="btn mr-2" onClick={handlePrevButton}>prev</button>
+                {calculateBtn().slice(buttonStart, buttonEnd).map((element) => <button onClick={() => handlePagination(element)} className="btn mx-1">{element}</button>)}
+                <button className="btn ml-2" onClick={handleNextButton}>next</button>
             </div>
         </div>
     );

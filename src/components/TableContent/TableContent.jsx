@@ -1,7 +1,7 @@
 import React from 'react';
 
 const TableContent = ({ data }) => {
-    console.log(data)
+    
     return (
         <tr>
             <td>
