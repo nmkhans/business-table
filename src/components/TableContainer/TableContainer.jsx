@@ -1,22 +1,31 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useGetProductsQuery } from '../../redux/api/api';
+import TableContent from '../TableContent/TableContent';
 
 const TableContainer = () => {
+    const [page, setPage] = useState(1);
     const [query, setQuery] = useState({
-        pageno: 1,
+        pageno: page,
         perpage: 5,
         search: ""
     })
     const { register, handleSubmit } = useForm();
-    const {data, isLoading} = useGetProductsQuery({
+    const { data, isLoading } = useGetProductsQuery({
         pageno: query.pageno,
         perpage: query.perpage,
         search: query.search
     })
 
-    if(isLoading) return "Loading..."
+    if (isLoading) return "Loading..."
     console.log(data)
+
+    const calculateBtn = () => {
+        const totalData = data.data[0].total[0].count;
+        const perpage = query.perpage;
+        const totalButtonAmount = Math.ceil(totalData / perpage);
+    }
+    console.log(calculateBtn())
 
     const onSubmit = (data) => {
         const newQuery = {
@@ -61,8 +70,31 @@ const TableContainer = () => {
                     <h3 className="text-md text-accent">Showing 10 of 2500 products</h3>
                 </div>
             </div>
-            <div className="table__content"></div>
-            <div className="table__pagination"></div>
+            <div className="table__content mt-5">
+                <div className="overflow-y-scroll h-[270px] w-full">
+                    <table className="table w-full">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                data.data[0].rows.map(data => <TableContent key={data._id} data={data} />)
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div className="table__pagination mt-3">
+                <div className="btn-group">
+                    <button className="btn">1</button>
+
+                </div>
+            </div>
         </div>
     );
 };
