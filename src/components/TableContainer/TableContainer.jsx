@@ -6,6 +6,7 @@ import ReactPaginate from 'react-paginate';
 
 const TableContainer = () => {
     const [page, setPage] = useState(1);
+    const [active, setActive] = useState(1);
     const [buttonStart, setButtonStart] = useState(0);
     const [buttonEnd, setButtonEnd] = useState(10);
     const [query, setQuery] = useState({
@@ -57,6 +58,7 @@ const TableContainer = () => {
 
     const handlePagination = (element) => {
         setPage(element);
+        setActive(element)
         setQuery({
             ...query,
             pageno: element
@@ -118,7 +120,7 @@ const TableContainer = () => {
             </div>
             <div className="table__pagination mt-5">
                 <button className="btn mr-2" onClick={handlePrevButton}>prev</button>
-                {calculateBtn().slice(buttonStart, buttonEnd).map((element) => <button onClick={() => handlePagination(element)} className="btn mx-1">{element}</button>)}
+                {calculateBtn().slice(buttonStart, buttonEnd).map((element) => <button onClick={() => handlePagination(element)} className={`btn mx-1 ${active === element && "active"}`}>{element}</button>)}
                 <button className="btn ml-2" onClick={handleNextButton}>next</button>
             </div>
         </div>
