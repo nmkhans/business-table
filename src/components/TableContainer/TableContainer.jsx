@@ -44,14 +44,14 @@ const TableContainer = () => {
     }
 
     const handleNextButton = () => {
-        setButtonEnd(prev => prev + 1)
-        setButtonStart(prev => prev + 1)
+        setButtonEnd(prev => prev + 10)
+        setButtonStart(prev => prev + 10)
     }
 
     const handlePrevButton = () => {
         if (buttonStart !== 0) {
-            setButtonEnd(prev => prev - 1)
-            setButtonStart(prev => prev - 1)
+            setButtonEnd(prev => prev - 10)
+            setButtonStart(prev => prev - 10)
         }
     }
 
