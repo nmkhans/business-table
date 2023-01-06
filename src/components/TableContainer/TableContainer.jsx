@@ -22,7 +22,6 @@ const TableContainer = () => {
     })
 
     if (isLoading) return "Loading..."
-    console.log(page)
 
     const calculateBtn = () => {
         const totalData = data.data[0].total[0].count;
@@ -112,7 +111,7 @@ const TableContainer = () => {
                         </thead>
                         <tbody>
                             {
-                                data.data[0].rows.map(data => <TableContent key={data._id} data={data} />)
+                                data?.data[0]?.rows?.map(data => <TableContent key={data._id} data={data} />)
                             }
                         </tbody>
                     </table>

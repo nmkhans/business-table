@@ -28,7 +28,11 @@ const TableContent = ({ data }) => {
                     {data.brand}
                 </span>
             </td>
-            <td>{data.stock}</td>
+            <td>{(data.stock === "Yes") ? (
+                <span className="badge badge-success text-white">{data.stock}</span>
+            ) : (
+                <span className="badge badge-error text-white">{data.stock}</span>
+            )}</td>
             <td>{data.star}</td>
         </tr>
     );
