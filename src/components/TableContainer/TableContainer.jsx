@@ -24,7 +24,7 @@ const TableContainer = () => {
     if (isLoading) return "Loading..."
 
     const calculateBtn = () => {
-        const totalData = data.data[0].total[0].count;
+        const totalData = data?.data[0]?.total[0]?.count;
         const perpage = query.perpage;
         const totalButtonAmount = Math.ceil(totalData / perpage);
         const buttonNo = [];
@@ -95,7 +95,7 @@ const TableContainer = () => {
                     </div>
                 </div>
                 <div className="heading__bottom mt-5">
-                    <h3 className="text-md text-accent">Showing {data.data[0].rows.length} of {data.data[0].total[0].count} products</h3>
+                    <h3 className="text-md text-accent">Showing {data?.data[0]?.rows?.length} of {data?.data[0]?.total[0]?.count} products</h3>
                 </div>
             </div>
             <div className="table__content mt-5">
